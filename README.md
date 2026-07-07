@@ -1,3 +1,23 @@
+
+
+
+
+https://github.com/user-
+
+https://github.com/user-attachments/assets/0f47178d-a9ab-48d2-9b0c-74709f69fb91
+
+attachments/assets/f6bcff68-b862-4647-9e5d-95af3f2a7bb8
+
+
+https://github.com/user-attachments/assets/ac4f6c14-39d5-42b6-b906-1f65f3e4f764
+
+
+
+https://github.com/user-attachments/assets/ead2cdd3-a3da-423e-b9b6-33219228892e
+
+
+
+
 # Meeting App — Senior Flutter Assessment (Stage 1)
 
 This Flutter app implements the required 1:1 meeting flow using the provided API and Amazon Chime SDK.
