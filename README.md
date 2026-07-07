@@ -91,3 +91,7 @@ Flow:
 ## Demo Video
 
 - Google Drive: [Meeting App Demo Video](https://drive.google.com/drive/folders/1h4yPxtcPDnkOTIXzlVnjz9FuSANbW2Wh?usp=sharing)
+
+## APK Download
+
+- Google Drive: [app-release.apk](https://drive.google.com/file/d/1jNyVV86M7GsMBU37LarAVBJIcaWcW17H/view?usp=sharing)
