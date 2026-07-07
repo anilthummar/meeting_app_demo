@@ -29,6 +29,7 @@ This Flutter app implements the required 1:1 meeting flow using the provided API
 ## State Management Used
 
 - `flutter_bloc` (BLoC) is used for app state management.
+- Only BLoC is used for application state management (no mixed Provider state management in the app tree).
 - `MeetingBloc` handles:
   - Create meeting
   - Join meeting
