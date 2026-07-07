@@ -67,3 +67,7 @@ Flow:
 1. Meeting IDs can expire; old IDs may return `Meeting not found`.
 2. iOS permissions are configured, but full iOS device validation was not completed.
 3. Local patched `flutter_amazon_chime` package is used for Android callback stability fixes.
+
+## Demo Video
+
+- Google Drive: [Meeting App Demo Video](https://drive.google.com/drive/folders/1h4yPxtcPDnkOTIXzlVnjz9FuSANbW2Wh?usp=sharing)
