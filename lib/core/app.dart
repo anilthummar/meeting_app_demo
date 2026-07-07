@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_amazon_chime/chime_session.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../bloc/meeting/meeting_bloc.dart';
 import '../repository/meeting_repository.dart';
@@ -15,32 +13,29 @@ class MeetingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiRepositoryProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ChimeSession()),
         RepositoryProvider(
           create: (_) => MeetingRepository(
             MeetingService(apiKey: ApiConstants.apiKey),
           ),
         ),
-        ProxyProvider2<MeetingRepository, ChimeSession, ChimeMeetingService>(
-          update: (_, repository, session, previous) =>
-              ChimeMeetingService(session),
-        ),
-        BlocProvider(
-          create: (context) => MeetingBloc(
-            context.read<MeetingRepository>(),
-            context.read<ChimeMeetingService>(),
-          ),
-        ),
+        RepositoryProvider(create: (_) => ChimeMeetingService()),
       ],
-      child: MaterialApp(
-        title: 'Meeting App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
+      child: BlocProvider(
+        create: (context) => MeetingBloc(
+          context.read<MeetingRepository>(),
+          context.read<ChimeMeetingService>(),
         ),
-        home: const HomeScreen(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Meeting App',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+            useMaterial3: true,
+          ),
+          home: const HomeScreen(),
+        ),
       ),
     );
   }

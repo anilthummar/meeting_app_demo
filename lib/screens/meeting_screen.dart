@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_amazon_chime/chime_session.dart';
 import 'package:flutter_amazon_chime/views/grid/participant_grid.dart';
-import 'package:flutter_amazon_chime/views/meeting_controls/meeting_controls.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/meeting/meeting_bloc.dart';
 import '../bloc/meeting/meeting_event.dart';
 import '../bloc/meeting/meeting_state.dart';
+import '../services/chime_meeting_service.dart';
 import '../widgets/meeting_chime_listener.dart';
 import '../widgets/meeting_logs.dart';
 import '../widgets/meeting_status_chip.dart';
@@ -53,24 +52,61 @@ class MeetingScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const MeetingControls(),
-                        const SizedBox(width: 8),
-                        FilledButton(
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(16),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: state.micEnabled
+                                  ? Colors.blue
+                                  : Colors.grey.shade700,
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(16),
+                            ),
+                            onPressed: () {
+                              context.read<MeetingBloc>().add(const ToggleMic());
+                            },
+                            child: Icon(
+                              state.micEnabled ? Icons.mic : Icons.mic_off,
+                              color: Colors.white,
+                            ),
                           ),
-                          onPressed: () {
-                            context.read<MeetingBloc>().add(const LeaveMeeting());
-                            Navigator.of(context).pop();
-                          },
-                          child: const Icon(Icons.call_end, color: Colors.white),
-                        ),
-                      ],
+                          const SizedBox(width: 8),
+                          FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: state.cameraEnabled
+                                  ? Colors.blue
+                                  : Colors.grey.shade700,
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(16),
+                            ),
+                            onPressed: () {
+                              context.read<MeetingBloc>().add(const ToggleCamera());
+                            },
+                            child: Icon(
+                              state.cameraEnabled
+                                  ? Icons.videocam
+                                  : Icons.videocam_off,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(16),
+                            ),
+                            onPressed: () {
+                              context.read<MeetingBloc>().add(const LeaveMeeting());
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(Icons.call_end, color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
@@ -109,13 +145,16 @@ class _VideoPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final session = context.watch<ChimeSession>();
-
-    return ParticipantGrid(
-      participants: session.allParticipants,
-      localAttendeeId: session.localAttendeeId,
-      roster: session.roster,
-      activeSpeakers: session.activeSpeakers.toSet(),
+    final chimeService = context.read<ChimeMeetingService>();
+    final session = chimeService.session;
+    return AnimatedBuilder(
+      animation: session,
+      builder: (context, child) => ParticipantGrid(
+        participants: session.allParticipants,
+        localAttendeeId: session.localAttendeeId,
+        roster: session.roster,
+        activeSpeakers: session.activeSpeakers.toSet(),
+      ),
     );
   }
 }

@@ -13,11 +13,11 @@ class MeetingJoinException implements Exception {
 }
 
 class ChimeMeetingService {
-  ChimeMeetingService(this._session, {Logger? logger})
-      : _logger = logger ?? Logger();
+  ChimeMeetingService({Logger? logger}) : _logger = logger ?? Logger();
 
-  final ChimeSession _session;
+  final ChimeSession _session = ChimeSession();
   final Logger _logger;
+  ChimeSession get session => _session;
 
   Future<void> join(JoinInfo joinInfo) async {
     await _ensureChimePermissions();
